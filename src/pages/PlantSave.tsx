@@ -20,7 +20,8 @@ import { Button } from '../components/Button';
 import waterdrop from '../assets/waterdrop.png';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { loadPlant, PlantProps, savePlant } from '../libs/storage';
+import { PlantProps, savePlant } from '../libs/storage';
+import { useNavigation } from '@react-navigation/native';
 
 interface Params  {
   plant: PlantProps;
@@ -32,6 +33,8 @@ export function PlantSave() {
 
   const route = useRoute();
   const { plant } = route.params as Params;
+
+  const navigation = useNavigation();
 
   function handleChangeTime(event: Event, dateTime: Date | undefined) {
     if (Platform.OS === 'android') {
@@ -60,7 +63,13 @@ export function PlantSave() {
         dateTimeNotification: selectedDateTime
       });
 
-
+      navigation.navigate('Confirmation', {
+        title: 'Tudo certo',
+        subtitle: 'Fique tranquilo que sempre vamos lembrar você de cuidar da sua plantinha com muito cuidado.',
+        buttonTitle: 'Muito obrigado :D',
+        icon: 'hug',
+        nextScreen: 'MyPlants',
+      });
     } catch {
       Alert.alert('Não foi possível salvar 😢');
     }
